@@ -9,7 +9,7 @@ import {
 } from "@/data/data/categories"; 
 
 interface PageProps {
-  params: { type: string; lang: string };
+  params: { type: string; lang: "ar" | "en" };
 }
 
 export async function generateStaticParams() {
