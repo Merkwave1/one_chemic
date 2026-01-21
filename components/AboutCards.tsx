@@ -102,8 +102,8 @@ const AboutCards: React.FC<AboutCardsProps> = ({ lang }) => {
         <CarouselContent>
           {oneChemicCards.map((item) => (
             <CarouselItem key={item.id}>
-              <div className="p-12 h-full">
-                <div className="relative h-[500px] md:h-[700px] lg:h-[850px] rounded-xl shadow-[0_0_32px_rgba(248,147,31,1)] overflow-hidden group">
+              <div className="p-2 md:p-12 h-full">
+                <div className="relative h-[500px] md:h-[700px] lg:h-[850px] rounded-xl shadow-[0_0_5px_rgba(248,147,31,1)] overflow-hidden group">
                   <Image
                     src={item.imagePath}
                     alt={item.title[lang]}

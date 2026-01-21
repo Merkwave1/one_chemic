@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Image from 'next/image'
 interface AboutHeroProps {
   lang:"en" | "ar";
 }
@@ -7,7 +7,17 @@ interface AboutHeroProps {
 const AboutHero: React.FC<AboutHeroProps> = ({ lang }) => {
 
   return (
-    <section className='h-screen bg-[url("/about-hero-Picsart-Enhancer.png")] bg-yellowish bg-cover bg-center flex flex-col gap-8 py-30 items-center px-2 '>
+    <section className='relative  h-screen  bg-yellowish bg-cover bg-center flex flex-col gap-8 py-30 items-center px-2 '>
+      <div className="absolute inset-0 bottom-0">
+        <Image
+          src="/about-hero-Picsart-Enhancer.png"
+          alt="About OneChemic"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+      </div>
+
       <h1 className='text-bluish font-extrabold text-3xl md:text-5xl text-center'>
         About OneChemic
       </h1>

@@ -70,7 +70,7 @@ const items = [
           align: "center",
           loop: true,
         }}
-        className="w-full max-w-5xl px-16"
+        className="w-full max-w-5xl px-8 md:px-16"
         dir={"ltr"}
       >
         <CarouselContent>
@@ -94,7 +94,7 @@ const items = [
                       {item.description[lang]}
                     </p>
 
-                    <button className="bg-yellowish hover:scale-110 mt-2 transition-transform duration-300 cursor-pointer px-12 py-2 shadow-[0_0_32px_rgba(248,147,31,1)]  self-center rounded-lg">
+                    <button className="bg-yellowish hover:scale-110 mt-2 transition-transform duration-300 cursor-pointer px-4 text-sm md:text-base md:px-12 py-2 shadow-[0_0_32px_rgba(248,147,31,1)]  self-center rounded-lg">
                       {" "}
                       {lang === "ar" ? "اعرف المزيد" : "Learn more"}
                     </button>

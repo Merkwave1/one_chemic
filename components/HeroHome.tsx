@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface GradientProps {
   lang?: string;
@@ -6,8 +7,22 @@ interface GradientProps {
 }
 const HeroHome: React.FC<GradientProps> = ({ lang, rtl = "ltr" }) => {
   return (
-    <section className="h-screen relative     bg-[url('/hero-mob.png')]
-    lg:bg-[url('/hero_upscaled.png')] bg-cover bg-center">
+<section className="relative h-screen w-full overflow-hidden">
+      {/* Hero Images */}
+      <Image
+        src="/hero-mob.png"
+        alt="Hero Image Mobile"
+        fill
+        className="object-cover object-center lg:hidden"
+        priority
+      />
+      <Image
+        src="/hero_upscaled.png"
+        alt="Hero Image Desktop"
+        fill
+        className="object-cover object-center hidden lg:block"
+        priority
+      />
 
       <div
         className={`
@@ -19,12 +34,12 @@ const HeroHome: React.FC<GradientProps> = ({ lang, rtl = "ltr" }) => {
       />
       <div className="relative z-10 flex flex-col items-start justify-center h-full p-8">
         <div className="flex flex-col items-center justify-center mb-20 ">
-          <h1 className="text-5xl text-white max-w-4xl p-10  text-center  ">
+          <h1 className="text-3xl mt-30 md:mt-0 md:text-5xl text-white max-w-4xl p-2 md:p-10  text-center  ">
             {lang === "ar"
               ? "المورد المتكامل للمواد الخام الكيميائية"
               : "YOUR ONE-STOP SUPPLIER FOR CHEMICAL RAW MATERIALS"}
           </h1>
-          <button className="bg-yellowish hover:scale-110 transition-transform duration-300 cursor-pointer px-12 py-2 shadow-[0_0_32px_rgba(248,147,31,1)]  self-center rounded-lg">
+          <button className="bg-yellowish hover:scale-110 transition-transform duration-300 cursor-pointer px-4 md:px-12 py-2 shadow-[0_0_32px_rgba(248,147,31,1)]  self-center rounded-lg">
             {" "}
             {lang === "ar"
               ? "اعرف المزيد"
