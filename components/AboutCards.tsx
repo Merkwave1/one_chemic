@@ -96,7 +96,7 @@ const AboutCards: React.FC<AboutCardsProps> = ({ lang }) => {
           align: "center",
           loop: true,
         }}
-        className="w-full max-w-5xl px-16"
+        className="w-full max-w-5xl px-2 md:px-16"
         dir={"ltr"}
       >
         <CarouselContent>
@@ -111,7 +111,7 @@ const AboutCards: React.FC<AboutCardsProps> = ({ lang }) => {
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
-                  <div className="absolute bottom-20 left-0 right-0 p-4 md:p-6 text-white flex flex-col items-center justify-center text-center">
+                  <div className="absolute bottom-20 left-0 right-0 p-2 md:p-6 text-md md:text-base text-white flex flex-col items-center justify-center text-center">
                     <h1 className="text-xl md:text-2xl font-bold mb-2">
                       {item.title[lang]}
                     </h1>
@@ -120,7 +120,7 @@ const AboutCards: React.FC<AboutCardsProps> = ({ lang }) => {
                       {item.description[lang]}
                     </p>
 
-                    <button className="bg-yellowish hover:scale-110 mt-2 transition-transform duration-300 cursor-pointer px-12 py-2 shadow-[0_0_32px_rgba(248,147,31,1)]  self-center rounded-lg">
+                    <button className="bg-yellowish hover:scale-110 mt-2 transition-transform duration-300 cursor-pointer text-sm md:text-base px-2 md:px-12 py-2 shadow-[0_0_32px_rgba(248,147,31,1)]  self-center rounded-lg">
                       {" "}
                       {lang === "ar" ? "اعرف المزيد" : "Learn more"}
                     </button>
@@ -131,8 +131,8 @@ const AboutCards: React.FC<AboutCardsProps> = ({ lang }) => {
           ))}
         </CarouselContent>
 
-        <CarouselPrevious className="left-2 sm:left-4 md:left-2 text-bluish bg-yellowish shadow-[0_0_32px_rgba(248,147,31,1)] hover:bg-yellowish/90 rounded-xl" />
-        <CarouselNext className="right-2  sm:right-4 md:right-2 text-bluish bg-yellowish shadow-[0_0_32px_rgba(248,147,31,1)] hover:bg-yellowish/90 rounded-xl" />
+        <CarouselPrevious className="left-1 sm:left-4 md:left-2 text-bluish bg-yellowish shadow-[0_0_32px_rgba(248,147,31,1)] hover:bg-yellowish/90 rounded-xl" />
+        <CarouselNext className="right-1  sm:right-4 md:right-2 text-bluish bg-yellowish shadow-[0_0_32px_rgba(248,147,31,1)] hover:bg-yellowish/90 rounded-xl" />
       </Carousel>
     </section>
   );

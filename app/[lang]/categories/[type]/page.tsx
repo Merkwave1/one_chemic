@@ -6,11 +6,10 @@ import {
   chemicalAdditivesElements,
   preservativesElements,
   pigmentsFillersElements,
-} from "@/data/data/categories"; // adjust path if needed
+} from "@/data/data/categories"; 
 
 interface PageProps {
-  params: { type: string };
-  lang?: "en" | "ar"; // optional if using lang later
+  params: { type: string; lang: string };
 }
 
 export async function generateStaticParams() {
@@ -19,8 +18,8 @@ export async function generateStaticParams() {
   }));
 }
 
-const CategoryPage = async ({ params, lang = "en" }: PageProps) => {
-  const { type } = await params;
+const CategoryPage = async ({ params }: PageProps) => {
+  const { lang, type } = await params;
 
   let elementsArray: typeof solventsElements = [];
   switch (type) {
@@ -51,10 +50,10 @@ const CategoryPage = async ({ params, lang = "en" }: PageProps) => {
         <CatergoryCard
           key={el.nav}
           lang={lang}
-          title={el.title[lang]} // picks EN or AR
+          title={el.title[lang]} 
           description={el.description[lang]}
           imagePath={el.imagePath}
-          nav={`/categories/${type}/${el.id}`} // dynamic route for element page
+          nav={`/categories/${type}/${el.id}`} 
         />
       ))}
     </section>

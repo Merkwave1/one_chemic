@@ -70,7 +70,7 @@ const items = [
           align: "center",
           loop: true,
         }}
-        className="w-full max-w-5xl px-8 md:px-16"
+        className="w-full max-w-5xl px-2 md:px-16"
         dir={"ltr"}
       >
         <CarouselContent>

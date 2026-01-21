@@ -18,7 +18,7 @@ const page: React.FC<PageProps> = ({ lang }) => {
         />
       </div>
 
-      <form className="bg-bluish h-full w-full z-10 text-white flex flex-col py-6 px-4 max-h-1/2  md:max-w-[40%] rounded-xl gap-8 ">
+      <form className="bg-bluish h-full w-full z-10 text-white flex flex-col py-6 px-4 max-h-3/4  md:max-w-[40%] rounded-xl gap-4 md:gap-8 ">
         <h2 className="text-yellowish font-bold text-2xl md:text-4xl text-center">
           Contact us
         </h2>

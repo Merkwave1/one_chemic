@@ -230,7 +230,7 @@ export const polymersElements = [
       ar: "النيوبرين هو مطاط صناعي يتميز بمقاومة الزيوت، المواد الكيميائية، الحرارة، والعوامل الجوية. يُستخدم في بدلات الغوص، الجوانات، الخراطيم، والمواد اللاصقة الصناعية."
     },
     nav: "neoprene",
-    imagePath: "/Neoprene.wepb",
+    imagePath: "/Neoprene.webp",
     category: CATEGORY_LABELS.polymers
 
   }

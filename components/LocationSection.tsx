@@ -15,12 +15,12 @@ const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
             bg-[radial-gradient(circle_at_center,rgba(255,225,0,0.8)_0%,rgba(248,147,31,0.2)_100%)]
           "
       />
-      <div className="flex flex-col items-center justify-center  gap-6 px-30 z-20">
+      <div className="flex flex-col items-center justify-center  gap-6 px-2 md:px-30 z-20">
         <MapPin size={250} className=" text-bluish" />
         <h4 className="font-extrabold text-5xl text-bluish text-center">
           {isArabic ? "الموقع" : "Location"}
         </h4>
-        <p className=" text-bluish text-center text-xl">
+        <p className=" text-bluish text-center text-sm md:text-xl">
           {isArabic
             ? "الإسكندرية، طريق الزراعة البطيء، قليوب، القليوبية، مصر"
             : "Alexandria, agricultural Slow Road, Qalyoub, Qalyoubia, Egypt"}
