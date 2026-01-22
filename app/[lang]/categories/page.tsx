@@ -58,7 +58,7 @@ type PageProps = {
 const page: React.FC<PageProps> = async ({ params }) => {
   const { lang } = await params;
   return (
-    <section className="h-full grid grid-cols-1 gap-x-6 gap-y-6 p-4 md:p-16 md:grid-cols-3 border-t-2 border-yellowish bg-bluish">
+    <section className="h-full grid grid-cols-1 gap-x-6 gap-y-6 p-6 md:p-16 md:grid-cols-3 border-t-2 border-yellowish bg-bluish">
       {categories.map((cat) => (
         <CatergoryCard
           key={cat.title.en}

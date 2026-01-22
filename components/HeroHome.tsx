@@ -7,10 +7,10 @@ interface GradientProps {
 }
 const HeroHome: React.FC<GradientProps> = ({ lang, rtl = "ltr" }) => {
   return (
-<section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-screen w-full overflow-hidden">
       {/* Hero Images */}
       <Image
-        src="/hero-mob.png"
+        src="/hero-mob.webp"
         alt="Hero Image Mobile"
         fill
         className="object-cover object-center lg:hidden"
@@ -27,7 +27,7 @@ const HeroHome: React.FC<GradientProps> = ({ lang, rtl = "ltr" }) => {
         priority
         sizes="(max-width: 1920px) 100vw, 1920px"
         placeholder="blur"
-        blurDataURL="/hero_upscaled.webp"
+        blurDataURL="/hero-mob.webp"
       />
 
       <div
@@ -47,9 +47,7 @@ const HeroHome: React.FC<GradientProps> = ({ lang, rtl = "ltr" }) => {
           </h1>
           <button className="bg-yellowish hover:scale-110 transition-transform duration-300 cursor-pointer px-4 md:px-12 py-2 shadow-[0_0_32px_rgba(248,147,31,1)]  self-center rounded-lg">
             {" "}
-            {lang === "ar"
-              ? "اعرف المزيد"
-              : "Learn more"}
+            {lang === "ar" ? "اعرف المزيد" : "Learn more"}
           </button>
         </div>
       </div>

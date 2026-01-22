@@ -22,7 +22,7 @@ const content = {
 const AboutHero: React.FC<AboutHeroProps> = ({ lang }) => {
   const { title, description } = content[lang];
   return (
-    <section className='relative  h-screen  bg-yellowish bg-cover bg-center flex flex-col gap-8 py-30 items-center px-2 '>
+    <section className='relative  h-screen  bg-yellowish bg-cover bg-center flex flex-col gap-8 py-2 sm:py-12 md:py-30 items-center px-2 '>
       <div className="absolute inset-0 bottom-0">
         <Image
           src="/about-hero-Picsart-Enhancer.webp"

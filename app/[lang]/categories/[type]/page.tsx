@@ -45,7 +45,7 @@ const CategoryPage = async ({ params }: PageProps) => {
   if (!elementsArray.length) return <div>No elements found for this category.</div>;
 
   return (
-    <section className="min-h-screen h-full grid grid-cols-1 gap-x-6 gap-y-6 p-16 md:grid-cols-3 border-t-2 border-yellowish bg-bluish">
+    <section className="min-h-screen h-full grid grid-cols-1 gap-x-6 gap-y-6 p-6 md:p-16 md:grid-cols-3 border-t-2 border-yellowish bg-bluish">
       {elementsArray.map((el) => (
         <CatergoryCard
           key={el.nav}

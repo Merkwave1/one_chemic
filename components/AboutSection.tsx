@@ -37,17 +37,17 @@ const AboutSection: React.FC<AboutHeroProps> = ({ lang }) => {
 
   return (
     <section
-      className={`flex w-full h-full text-center ${
-        lang === "ar" ? "flex-row-reverse" : "flex-row"
+      className={`flex flex-col w-full h-full text-center ${
+        lang === "ar" ? "md:flex-row-reverse" : "md:flex-row"
       }`}
     >
-      <div className="w-1/2 bg-bluish py-24 text-yellowish flex flex-col gap-14 px-2 md:px-12 items-center justify-center">
+      <div className="w-full md:w-1/2 bg-bluish py-24 text-yellowish flex flex-col gap-14 px-2 md:px-12 items-center justify-center">
         <h3 className="text-2xl md:text-4xl font-extrabold">
           {content.foundation.title[lang]}
         </h3>
         <p className="text-sm md:text-xl">{content.foundation.description[lang]}</p>
       </div>
-      <div className="w-1/2 bg-yellowish py-24 text-bluish flex flex-col gap-14 px-4 md:px-12 items-center justify-center">
+      <div className="w-full md:w-1/2 bg-yellowish py-24 text-bluish flex flex-col gap-14 px-4 md:px-12 items-center justify-center">
         <h3 className="text-2xl md:text-4xl font-extrabold">
           {content.solutions.title[lang]}
         </h3>
