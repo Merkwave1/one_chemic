@@ -15,6 +15,9 @@ const HeroHome: React.FC<GradientProps> = ({ lang, rtl = "ltr" }) => {
         fill
         className="object-cover object-center lg:hidden"
         priority
+        sizes="(max-width: 1080px) 100vw, 1920px"
+        placeholder="blur"
+        blurDataURL="/hero_upscaled.webp"
       />
       <Image
         src="/hero_upscaled.png"
@@ -22,6 +25,9 @@ const HeroHome: React.FC<GradientProps> = ({ lang, rtl = "ltr" }) => {
         fill
         className="object-cover object-center hidden lg:block"
         priority
+        sizes="(max-width: 1920px) 100vw, 1920px"
+        placeholder="blur"
+        blurDataURL="/hero_upscaled.webp"
       />
 
       <div
