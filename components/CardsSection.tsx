@@ -46,7 +46,7 @@ const CardsSection: React.FC<CardsSectionProps> = ({ lang }) => {
           imagePath="/supplychain.webp"
           title={{
             en: "Supply chain optimization",
-            ar: "البحث والتطوير",
+            ar: "تحسين سلسلة التوريد",
           }}
           description={{
             en: "Our supply chain processes are optimized for efficiency and timely delivery.",
@@ -58,7 +58,7 @@ const CardsSection: React.FC<CardsSectionProps> = ({ lang }) => {
           imagePath="/qulaitycontrol.webp"
           title={{
             en: "Quality Control & Assurance",
-            ar: "البحث والتطوير",
+            ar: "مراقبة الجودة وضمانها",
           }}
           description={{
             en: "We ensure the highest standards of quality in all our products.",
