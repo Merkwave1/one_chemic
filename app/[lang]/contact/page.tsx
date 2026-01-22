@@ -19,7 +19,7 @@ const page: React.FC<PageProps> = async ({ params }) => {
         />
       </div>
 
-      <form className="bg-bluish  w-full z-10 text-white flex flex-col py-6 px-4 h-[75%] sm:max-h-[60%]  md:max-w-[30%] rounded-xl gap-4 ">
+      <form className="bg-bluish  w-full z-10 text-white flex flex-col py-6 px-4 max-h-[75%]   md:max-w-[30%] rounded-xl gap-4 ">
         <h2 className="text-yellowish font-bold text-2xl lg:text-4xl text-center">
           {lang === "ar" ? "تواصل معنا" : "Contact Us"}
         </h2>
