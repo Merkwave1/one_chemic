@@ -103,11 +103,13 @@ export default function Footer({ lang }: FooterProps) {
               <li className="flex items-center gap-3 mt-3 justify-start">
                 <a
                   aria-label="facebook"
+                  href="https://www.facebook.com/onechemic"
+                  target="_blank"
                   className="p-1 rounded-full bg-white/10"
                 >
                   <Facebook size={16} />
                 </a>
-                <a aria-label="x" className="p-1 rounded-full bg-white/10">
+                <a aria-label="x" className="p-1 rounded-full bg-white/10" href="https://x.com/onechemic" target="_blank">
                   <Twitter size={16} />
                 </a>
               </li>
