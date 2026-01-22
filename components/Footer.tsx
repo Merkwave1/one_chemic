@@ -1,5 +1,5 @@
 import React from "react";
-import { MapPin, Phone, Mail, Facebook, X } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Twitter } from "lucide-react";
 
 type FooterProps = {
   lang: "en" | "ar";
@@ -35,9 +35,7 @@ export default function Footer({ lang }: FooterProps) {
   const isRtl = lang === "ar";
 
   // helpers
-  const textAlign = isRtl
-    ? "text-right"
-    : "text-left";
+  const textAlign = isRtl ? "text-right" : "text-left";
 
   const rowAlign = "justify-start";
 
@@ -110,7 +108,7 @@ export default function Footer({ lang }: FooterProps) {
                   <Facebook size={16} />
                 </a>
                 <a aria-label="x" className="p-1 rounded-full bg-white/10">
-                  <X size={16} />
+                  <Twitter size={16} />
                 </a>
               </li>
             </ul>
