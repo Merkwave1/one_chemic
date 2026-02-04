@@ -27,11 +27,11 @@ services:
     container_name: onechemic-caddy
     restart: unless-stopped
     ports:
-      - "8888:80"
+      - "8888:8888"
+      - "8889:8889"
+      - "8890:8890"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
     depends_on:
       - backend
       - admin
@@ -53,8 +53,8 @@ services:
       - Jwt__Issuer=oncemeic
       - Jwt__Audience=oncechemic
       - Jwt__ExpiresInMinutes=60
-    expose:
-      - "8080"
+    ports:
+      - "5224:8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -69,13 +69,13 @@ services:
       context: ./Frontend/admin
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=http://api.onechemic.46.224.186.76.nip.io:8888
+        - NEXT_PUBLIC_API_URL=https://victor-nsw-asn-decision.trycloudflare.com
     container_name: onechemic-admin
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_API_URL=http://api.onechemic.46.224.186.76.nip.io:8888
-    expose:
-      - "3000"
+      - NEXT_PUBLIC_API_URL=https://victor-nsw-asn-decision.trycloudflare.com
+    ports:
+      - "3000:3000"
     depends_on:
       - backend
     networks:
@@ -87,13 +87,13 @@ services:
       context: ./Frontend/onechemic
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=http://api.onechemic.46.224.186.76.nip.io:8888
+        - NEXT_PUBLIC_API_URL=https://victor-nsw-asn-decision.trycloudflare.com
     container_name: onechemic-frontend
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_API_URL=http://api.onechemic.46.224.186.76.nip.io:8888
-    expose:
-      - "3001"
+      - NEXT_PUBLIC_API_URL=https://victor-nsw-asn-decision.trycloudflare.com
+    ports:
+      - "3001:3001"
     depends_on:
       - backend
     networks:

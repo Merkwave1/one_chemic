@@ -1,0 +1,12 @@
+tunnel: onechemic-tunnel
+credentials-file: /root/.cloudflare-warp/cert.pem
+
+ingress:
+  - hostname: admin.onechemic.local
+    service: http://localhost:8888
+  - hostname: onechemic.onechemic.local
+    service: http://localhost:8889
+  - hostname: api.onechemic.local
+    service: http://localhost:8890
+  - service: http_status:404
+
