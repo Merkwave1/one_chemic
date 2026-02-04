@@ -10,7 +10,7 @@ const HeroHome: React.FC<GradientProps> = ({ lang, rtl = "ltr" }) => {
     <section className="relative h-screen w-full overflow-hidden">
       {/* Hero Images */}
       <Image
-        src="/3.png"
+        src="/3.webp"
         alt="Hero Image Mobile"
         fill
         className="object-cover object-center lg:hidden"
@@ -18,7 +18,7 @@ const HeroHome: React.FC<GradientProps> = ({ lang, rtl = "ltr" }) => {
         sizes="(max-width: 1080px) 100vw, 1920px"
       />
       <Image
-        src="/4.png"
+        src="/4.webp"
         alt="Hero Image Desktop"
         fill
         className="object-cover object-center hidden lg:block"
