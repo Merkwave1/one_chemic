@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
-import { Poppins,Tajawal } from "next/font/google";
+import { Alexandria } from "next/font/google";
 import "./globals.css";
 
-export const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-poppins",
+const alexandria = Alexandria({
+  subsets: ["latin", "arabic"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  variable: "--font-alexandria",
 });
-
-export const tajawal = Tajawal({
-  subsets: ["arabic", "latin"],
-  weight: ["300", "400", "500", "700"],
-  variable: "--font-tajawal",
-});
-
 
 
 export const metadata: Metadata = {
@@ -72,7 +66,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${tajawal.variable} antialiased`}>
+      <body className={`${alexandria.className} antialiased`}>
         {children}
       </body>
     </html>

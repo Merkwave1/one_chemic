@@ -1,0 +1,31 @@
+# OneChemic Caddy Configuration
+# Using nip.io for wildcard DNS (no real domain needed)
+
+{
+    http_port 80
+    https_port 443
+    auto_https off
+}
+
+# Admin Dashboard - admin.onechemic.46.224.186.76.nip.io:8080
+:80 {
+    @admin host admin.onechemic.46.224.186.76.nip.io
+    handle @admin {
+        reverse_proxy admin:3000
+    }
+
+    @website host onechemic.46.224.186.76.nip.io
+    handle @website {
+        reverse_proxy onechemic:3001
+    }
+
+    @api host api.onechemic.46.224.186.76.nip.io
+    handle @api {
+        reverse_proxy backend:8080
+    }
+
+    # Fallback
+    handle {
+        respond "Not Found" 404
+    }
+}

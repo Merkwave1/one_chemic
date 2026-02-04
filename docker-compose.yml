@@ -1,0 +1,110 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: onechemic-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: one_chemic
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5440:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d one_chemic"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - onechemic-network
+
+  # Caddy Reverse Proxy
+  caddy:
+    image: caddy:2-alpine
+    container_name: onechemic-caddy
+    restart: unless-stopped
+    ports:
+      - "8888:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+      - admin
+      - onechemic
+    networks:
+      - onechemic-network
+
+  # Backend API (.NET)
+  backend:
+    build:
+      context: ./Onechemic
+      dockerfile: Onechemic.API/Dockerfile
+    container_name: onechemic-backend
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=one_chemic;Username=postgres;Password=admin
+      - Jwt__Key=RUHQ6zJJDLWlWgdA6ReAezpYxDvfNsyv
+      - Jwt__Issuer=oncemeic
+      - Jwt__Audience=oncechemic
+      - Jwt__ExpiresInMinutes=60
+    expose:
+      - "8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - backend_uploads:/app/wwwroot/products
+    networks:
+      - onechemic-network
+
+  # Admin Frontend (Next.js)
+  admin:
+    build:
+      context: ./Frontend/admin
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://api.onechemic.46.224.186.76.nip.io:8888
+    container_name: onechemic-admin
+    restart: unless-stopped
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api.onechemic.46.224.186.76.nip.io:8888
+    expose:
+      - "3000"
+    depends_on:
+      - backend
+    networks:
+      - onechemic-network
+
+  # OneChemic Frontend (Next.js)
+  onechemic:
+    build:
+      context: ./Frontend/onechemic
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://api.onechemic.46.224.186.76.nip.io:8888
+    container_name: onechemic-frontend
+    restart: unless-stopped
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api.onechemic.46.224.186.76.nip.io:8888
+    expose:
+      - "3001"
+    depends_on:
+      - backend
+    networks:
+      - onechemic-network
+
+volumes:
+  postgres_data:
+  backend_uploads:
+  caddy_data:
+  caddy_config:
+
+networks:
+  onechemic-network:
+    driver: bridge

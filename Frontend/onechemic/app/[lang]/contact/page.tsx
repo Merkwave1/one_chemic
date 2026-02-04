@@ -31,38 +31,38 @@ const page: React.FC<PageProps> = async ({ params }) => {
       </header>
 
       {/* Contact Form + Info Panel */}
-      <section className="max-w-7xl mx-auto px-2 md:px-12 -mt-10 mb-20 relative z-20">
+      <section className="max-w-7xl mx-auto px-2 md:px-12 bg-transparent -mt-10 mb-20 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 shadow-2xl rounded-xl overflow-hidden">
           {/* Contact Form */}
-          <div className="bg-white dark:bg-slate-800 p-8 md:p-12">
-            <h2 className="text-xl md:text-3xl font-bold mb-8 dark:text-white text-center">
+          <div className="bg-white  p-8 md:p-12">
+            <h2 className="text-xl md:text-3xl font-bold mb-8 text-black text-center">
               {isArabic ? "أرسل لنا رسالة" : "Send us a message"}
             </h2>
             <form className="space-y-6 flex flex-col">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-700  mb-2">
                     {isArabic ? "الاسم الكامل" : "Full Name"}
                   </label>
                   <input
                     type="text"
                     placeholder={isArabic ? "اسمك" : "John Doe"}
-                    className="w-full px-4 py-3 rounded border border-slate-200 dark:bg-slate-700 dark:border-slate-600 focus:ring-primary focus:border-primary transition-all"
+                    className="w-full px-4 py-3 rounded border border-slate-200   focus:ring-primary focus:border-primary transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-700  mb-2">
                     {isArabic ? "الشركة" : "Company"}
                   </label>
                   <input
                     type="text"
                     placeholder={isArabic ? "شركتك" : "Your Industries Ltd."}
-                    className="w-full px-4 py-3 rounded border border-slate-200 dark:bg-slate-700 dark:border-slate-600 focus:ring-primary focus:border-primary transition-all"
+                    className="w-full px-4 py-3 rounded border border-slate-200   focus:ring-primary focus:border-primary transition-all"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700  mb-2">
                   {isArabic ? "البريد الإلكتروني" : "Email Address"}
                 </label>
                 <input
@@ -70,17 +70,17 @@ const page: React.FC<PageProps> = async ({ params }) => {
                   placeholder={
                     isArabic ? "بريدك الإلكتروني" : "john@company.com"
                   }
-                  className="w-full px-4 py-3 rounded border border-slate-200 dark:bg-slate-700 dark:border-slate-600 focus:ring-primary focus:border-primary transition-all"
+                  className="w-full px-4 py-3 rounded border border-slate-200   focus:ring-primary focus:border-primary transition-all"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700  mb-2">
                   {isArabic ? "الموضوع" : "Subject"}
                 </label>
                 <ContactDropdown isArabic={isArabic} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700  mb-2">
                   {isArabic ? "رسالتك" : "Your Message"}
                 </label>
                 <textarea
@@ -88,7 +88,7 @@ const page: React.FC<PageProps> = async ({ params }) => {
                   placeholder={
                     isArabic ? "كيف يمكننا مساعدتك؟" : "How can we help you?"
                   }
-                  className="w-full px-4 py-3 rounded border border-slate-200 dark:bg-slate-700 dark:border-slate-600 focus:ring-primary focus:border-primary transition-all"
+                  className="w-full px-4 py-3 rounded border border-slate-200   focus:ring-primary focus:border-primary transition-all"
                 />
               </div>
               <button
@@ -101,7 +101,7 @@ const page: React.FC<PageProps> = async ({ params }) => {
           </div>
 
           {/* Info Panel */}
-          <div className="bg-yellowish py-8 px-2 md:p-12 flex flex-col justify-between">
+          <div className="bg-yellowish py-8 px-8 md:p-12 flex flex-col justify-between">
             <div>
               <h2 className="text-xl md:text-3xl text-center font-bold mb-10">
                 {isArabic ? "معلومات التواصل" : "Contact Information"}

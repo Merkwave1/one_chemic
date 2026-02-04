@@ -15,7 +15,6 @@ export default async function LangLayout({ children, params }: Props) {
   return (
     <div
       className="flex flex-col min-h-screen"
-      style={{ fontFamily: validLang === "ar" ? "var(--font-tajawal)" : "var(--font-poppins)" }}
       dir={validLang === "ar" ? "rtl" : "ltr"}
     >
       <Navbar lang={validLang} />

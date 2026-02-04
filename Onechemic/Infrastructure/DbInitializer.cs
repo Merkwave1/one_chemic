@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Infrastructure.persistence;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +9,38 @@ namespace Infrastructure.DataSeeding
 {
     public static class DbInitializer
     {
+        public static async Task SeedAdminUserAsync(UserManager<ApplicationUser> userManager)
+        {
+            // Check if admin user already exists
+            var adminUser = await userManager.FindByNameAsync("admin");
+            if (adminUser == null)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "admin",
+                    Email = "admin@onechemic.com",
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(user, "admin123");
+                if (result.Succeeded)
+                {
+                    Console.WriteLine("Admin user created successfully.");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        Console.WriteLine($"Error creating admin user: {error.Description}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Admin user already exists.");
+            }
+        }
+
         public static async Task SeedProductsAsync(ApplicationDbContext context)
         {
             if (await context.Products.AnyAsync())
