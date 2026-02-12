@@ -1,5 +1,6 @@
 import React from "react";
-import { MapPin, Phone, Mail, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Linkedin, Instagram } from "lucide-react";
+import { FaXTwitter } from "react-icons/fa6";
 import Image from "next/image";
 
 type FooterProps = {
@@ -142,7 +143,7 @@ export default function Footer({ lang }: FooterProps) {
                   href="https://x.com/onechemic"
                   target="_blank"
                 >
-                  <Twitter size={18} />
+                  <FaXTwitter size={18} />
                 </a>
                 <a
                   aria-label="linkedin"
