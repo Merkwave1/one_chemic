@@ -132,8 +132,6 @@ const ElementPage = async ({ params }: PageProps) => {
             className="object-cover"
             unoptimized
           />
-          {/* Image overlay */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-bluish/40 to-transparent" />
         </div>
       </div>
     </section>

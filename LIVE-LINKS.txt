@@ -10,15 +10,15 @@
 ═══════════════════════════════════════════════════════════════════════════
 
 📱 ADMIN DASHBOARD:
-   https://costume-significant-contests-premises.trycloudflare.com
+   https://buried-adrian-jurisdiction-levitra.trycloudflare.com
    
    Login: admin / admin123
 
 🌐 PUBLIC WEBSITE:
-   https://cuisine-bailey-opinions-psychology.trycloudflare.com
+   https://builder-affecting-usage-sie.trycloudflare.com
 
 🔌 API BACKEND:
-   https://victor-nsw-asn-decision.trycloudflare.com/api/
+   https://societies-meal-newsletters-subdivision.trycloudflare.com/api/
 
 
 ═══════════════════════════════════════════════════════════════════════════
@@ -39,15 +39,15 @@
 ═══════════════════════════════════════════════════════════════════════════
 
 1. ADMIN DASHBOARD:
-   Open: https://costume-significant-contests-premises.trycloudflare.com
+   Open: https://buried-adrian-jurisdiction-levitra.trycloudflare.com
    Enter: admin / admin123
    
 2. PUBLIC WEBSITE:
-   Open: https://cuisine-bailey-opinions-psychology.trycloudflare.com
+   Open: https://builder-affecting-usage-sie.trycloudflare.com
    (Will redirect to English version automatically)
 
 3. API (for developers):
-   Products: https://victor-nsw-asn-decision.trycloudflare.com/api/product
+   Products: https://societies-meal-newsletters-subdivision.trycloudflare.com/api/product
    Login: POST to https://victor-nsw-asn-decision.trycloudflare.com/api/user/login
    Body: {"userName": "admin", "password": "admin123"}
 

@@ -1,0 +1,17 @@
+[Unit]
+Description=OneChemic Cloudflare Tunnel for API
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=nassar
+WorkingDirectory=/home/nassar/projects/one_chemic
+ExecStart=/usr/bin/cloudflared tunnel --url http://localhost:8890
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

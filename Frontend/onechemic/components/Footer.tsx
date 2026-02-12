@@ -1,5 +1,5 @@
 import React from "react";
-import { MapPin, Phone, Mail, Facebook, Twitter } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import Image from "next/image";
 
 type FooterProps = {
@@ -143,6 +143,22 @@ export default function Footer({ lang }: FooterProps) {
                   target="_blank"
                 >
                   <Twitter size={18} />
+                </a>
+                <a
+                  aria-label="linkedin"
+                  className="p-2 rounded-full bg-[#0A1128] text-white hover:bg-[#0A1128]/80 hover:scale-110 transition-all duration-200 shadow-md"
+                  href="https://www.linkedin.com/company/one-chemic"
+                  target="_blank"
+                >
+                  <Linkedin size={18} />
+                </a>
+                <a
+                  aria-label="instagram"
+                  className="p-2 rounded-full bg-[#0A1128] text-white hover:bg-[#0A1128]/80 hover:scale-110 transition-all duration-200 shadow-md"
+                  href="https://www.instagram.com/one_chemic/"
+                  target="_blank"
+                >
+                  <Instagram size={18} />
                 </a>
               </li>
             </ul>

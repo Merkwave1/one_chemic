@@ -69,11 +69,11 @@ services:
       context: ./Frontend/admin
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=https://victor-nsw-asn-decision.trycloudflare.com
+        - NEXT_PUBLIC_API_URL=https://seven-proxy-tex-difficulty.trycloudflare.com
     container_name: onechemic-admin
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_API_URL=https://victor-nsw-asn-decision.trycloudflare.com
+      - NEXT_PUBLIC_API_URL=https://seven-proxy-tex-difficulty.trycloudflare.com
     ports:
       - "3000:3000"
     depends_on:
@@ -87,11 +87,11 @@ services:
       context: ./Frontend/onechemic
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=https://victor-nsw-asn-decision.trycloudflare.com
+        - NEXT_PUBLIC_API_URL=https://seven-proxy-tex-difficulty.trycloudflare.com
     container_name: onechemic-frontend
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_API_URL=https://victor-nsw-asn-decision.trycloudflare.com
+      - NEXT_PUBLIC_API_URL=https://seven-proxy-tex-difficulty.trycloudflare.com
     ports:
       - "3001:3001"
     depends_on:

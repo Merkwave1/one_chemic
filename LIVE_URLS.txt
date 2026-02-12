@@ -1,0 +1,11 @@
+OneChemic Live HTTPS URLs (Generated: Thu Feb 12 11:05:44 AM UTC 2026)
+================================================
+
+Admin Dashboard: https://buried-adrian-jurisdiction-levitra.trycloudflare.com
+  Login: admin / admin123
+
+Public Website: https://builder-affecting-usage-sie.trycloudflare.com
+
+API Backend: https://societies-meal-newsletters-subdivision.trycloudflare.com
+
+Note: These temporary tunnels may expire. Run ./start-tunnels.sh to restart them.
