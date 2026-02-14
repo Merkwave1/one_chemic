@@ -18,7 +18,7 @@ const Page: React.FC = () => {
 
   // Redirect to dashboard if already logged in and token not expired
   React.useEffect(() => {
-    if (token) {
+    if (token && tokenTimestamp) {
       if (isTokenExpired(tokenTimestamp)) {
         // Token expired, clear it
         setToken("");
@@ -52,17 +52,30 @@ const Page: React.FC = () => {
       });
 
       if (!response.ok) {
-        const errData = await response.json();
-        setError(errData.message || "Login failed");
+        // Backend may return plain text or JSON for errors
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errData = await response.json();
+          // Handle ASP.NET ModelState validation errors
+          if (errData.errors) {
+            const messages = Object.values(errData.errors).flat().join(", ");
+            setError(messages || "Validation failed");
+          } else {
+            setError(errData.message || errData.title || "Login failed");
+          }
+        } else {
+          const text = await response.text();
+          setError(text || "Login failed");
+        }
         return;
       }
 
       const result = await response.json();
 
       if (result.token) {
-        // atomWithStorage handles localStorage automatically
+        // Set timestamp FIRST so the useEffect doesn't clear the token
+        setTokenTimestamp(Date.now());
         setToken(result.token);
-        setTokenTimestamp(Date.now()); // Set timestamp for 60 minute expiry
         setError("");
         router.push("/dashboard");
       } else {

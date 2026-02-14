@@ -1,5 +1,6 @@
 // Base URL for API - reads from environment variable
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5224";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://localhost:7037";
 
 // Auth Endpoints
 export const LOGIN_ENDPOINT = `${API_BASE_URL}/api/user/login`;

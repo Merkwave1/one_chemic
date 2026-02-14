@@ -22,7 +22,7 @@ namespace Infrastructure.DataSeeding
                     EmailConfirmed = true
                 };
 
-                var result = await userManager.CreateAsync(user, "admin123");
+                var result = await userManager.CreateAsync(user, "6:qQ/]UKo924");
                 if (result.Succeeded)
                 {
                     Console.WriteLine("Admin user created successfully.");
