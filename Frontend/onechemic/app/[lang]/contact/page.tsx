@@ -1,13 +1,127 @@
-import React from "react";
-import { MapPin, ShoppingCart, Building } from "lucide-react";
+"use client";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  MapPin,
+  ShoppingCart,
+  Building,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 import ContactDropdown from "@/components/ContactDropdown";
+import { CLIENT_ENDPOINT } from "@/config/config";
 
 interface PageProps {
   params: { lang: "en" | "ar" };
 }
 
-const page: React.FC<PageProps> = async ({ params }) => {
-  const { lang } = await params;
+interface FormData {
+  fullName: string;
+  company: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+const ContactPage: React.FC<PageProps> = ({ params }) => {
+  const [resolvedParams, setResolvedParams] = useState<{
+    lang: "en" | "ar";
+  } | null>(null);
+  const [formData, setFormData] = useState<FormData>({
+    fullName: "",
+    company: "",
+    email: "",
+    subject: "Sales Inquiry",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
+  useEffect(() => {
+    const resolveParams = async () => {
+      const resolved = await params;
+      setResolvedParams(resolved);
+    };
+    resolveParams();
+  }, [params]);
+
+  useEffect(() => {
+    if (submitStatus.type) {
+      const timer = setTimeout(() => {
+        setSubmitStatus({ type: null, message: "" });
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [submitStatus]);
+
+  const handleInputChange = (field: keyof FormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubjectChange = useCallback((subject: string) => {
+    setFormData((prev) => ({ ...prev, subject }));
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: "" });
+
+    try {
+      const response = await fetch(CLIENT_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          company: formData.company,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setSubmitStatus({
+          type: "success",
+          message:
+            resolvedParams?.lang === "ar"
+              ? "تم إرسال رسالتك بنجاح! سنتواصل معك قريباً."
+              : "Message sent successfully! We'll get back to you soon.",
+        });
+        setFormData({
+          fullName: "",
+          company: "",
+          email: "",
+          subject: "Sales Inquiry",
+          message: "",
+        });
+      } else {
+        throw new Error(result.message || "Failed to send message");
+      }
+    } catch (error) {
+      setSubmitStatus({
+        type: "error",
+        message:
+          resolvedParams?.lang === "ar"
+            ? "حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى."
+            : "Failed to send message. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (!resolvedParams) {
+    return <div>Loading...</div>;
+  }
+
+  const { lang } = resolvedParams;
   const isArabic = lang === "ar";
 
   return (
@@ -38,64 +152,117 @@ const page: React.FC<PageProps> = async ({ params }) => {
             <h2 className="text-xl md:text-3xl font-bold mb-8 text-black text-center">
               {isArabic ? "أرسل لنا رسالة" : "Send us a message"}
             </h2>
-            <form className="space-y-6 flex flex-col">
+
+            {/* Success/Error Messages */}
+            {submitStatus.type && (
+              <div
+                className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
+                  submitStatus.type === "success"
+                    ? "bg-green-100 text-green-800 border border-green-300"
+                    : "bg-red-100 text-red-800 border border-red-300"
+                }`}
+              >
+                {submitStatus.type === "success" ? (
+                  <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                ) : (
+                  <XCircle className="w-5 h-5 flex-shrink-0" />
+                )}
+                <span className="text-sm md:text-base">
+                  {submitStatus.message}
+                </span>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6 flex flex-col">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700  mb-2">
-                    {isArabic ? "الاسم الكامل" : "Full Name"}
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    {isArabic ? "الاسم الكامل" : "Full Name"}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
+                    value={formData.fullName}
+                    onChange={(e) =>
+                      handleInputChange("fullName", e.target.value)
+                    }
                     placeholder={isArabic ? "اسمك" : "John Doe"}
-                    className="w-full px-4 py-3 rounded border border-slate-200   focus:ring-primary focus:border-primary transition-all"
+                    className="w-full px-4 py-3 rounded border border-slate-200 focus:ring-primary focus:border-primary transition-all"
+                    required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700  mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     {isArabic ? "الشركة" : "Company"}
                   </label>
                   <input
                     type="text"
+                    value={formData.company}
+                    onChange={(e) =>
+                      handleInputChange("company", e.target.value)
+                    }
                     placeholder={isArabic ? "شركتك" : "Your Industries Ltd."}
-                    className="w-full px-4 py-3 rounded border border-slate-200   focus:ring-primary focus:border-primary transition-all"
+                    className="w-full px-4 py-3 rounded border border-slate-200 focus:ring-primary focus:border-primary transition-all"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700  mb-2">
-                  {isArabic ? "البريد الإلكتروني" : "Email Address"}
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  {isArabic ? "البريد الإلكتروني" : "Email Address"}{" "}
+                  <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
                   placeholder={
                     isArabic ? "بريدك الإلكتروني" : "john@company.com"
                   }
-                  className="w-full px-4 py-3 rounded border border-slate-200   focus:ring-primary focus:border-primary transition-all"
+                  className="w-full px-4 py-3 rounded border border-slate-200 focus:ring-primary focus:border-primary transition-all"
+                  required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700  mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   {isArabic ? "الموضوع" : "Subject"}
                 </label>
-                <ContactDropdown isArabic={isArabic} />
+                <ContactDropdown
+                  isArabic={isArabic}
+                  onSubjectChange={handleSubjectChange}
+                />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700  mb-2">
-                  {isArabic ? "رسالتك" : "Your Message"}
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  {isArabic ? "رسالتك" : "Your Message"}{" "}
+                  <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   rows={5}
+                  value={formData.message}
+                  onChange={(e) => handleInputChange("message", e.target.value)}
                   placeholder={
                     isArabic ? "كيف يمكننا مساعدتك؟" : "How can we help you?"
                   }
-                  className="w-full px-4 py-3 rounded border border-slate-200   focus:ring-primary focus:border-primary transition-all"
+                  className="w-full px-4 py-3 rounded border border-slate-200 focus:ring-primary focus:border-primary transition-all"
+                  required
                 />
               </div>
               <button
                 type="submit"
-                className="bg-yellowish self-center hover:scale-110 transition-transform duration-300 cursor-pointer px-4 md:px-12 py-2 shadow-[0_0_32px_rgba(248,147,31,1)]  rounded-lg"
+                disabled={isSubmitting}
+                className={`self-center px-4 md:px-12 py-2 rounded-lg transition-transform duration-300 ${
+                  isSubmitting
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-yellowish hover:scale-110 cursor-pointer shadow-[0_0_32px_rgba(248,147,31,1)]"
+                }`}
               >
-                {isArabic ? "إرسال الرسالة" : "Send Message"}
+                {isSubmitting
+                  ? isArabic
+                    ? "جارٍ الإرسال..."
+                    : "Sending..."
+                  : isArabic
+                    ? "إرسال الرسالة"
+                    : "Send Message"}
               </button>
             </form>
           </div>
@@ -133,7 +300,7 @@ const page: React.FC<PageProps> = async ({ params }) => {
                       dir="ltr"
                       className={`text-sm md:text-base font-medium ${
                         lang === "ar" ? "text-right" : "text-left"
-                      }`}                
+                      }`}
                     >
                       (+20) 10 30 20 7156
                     </p>
@@ -141,7 +308,7 @@ const page: React.FC<PageProps> = async ({ params }) => {
                       dir="ltr"
                       className={`text-sm md:text-base font-medium ${
                         lang === "ar" ? "text-right" : "text-left"
-                      }`}                
+                      }`}
                     >
                       (+20) 10 30 20 2219
                     </p>
@@ -162,7 +329,7 @@ const page: React.FC<PageProps> = async ({ params }) => {
                       dir="ltr"
                       className={`text-sm md:text-base font-medium ${
                         lang === "ar" ? "text-right" : "text-left"
-                      }`}                
+                      }`}
                     >
                       (+20) 10 30 20 7156
                     </p>
@@ -180,4 +347,4 @@ const page: React.FC<PageProps> = async ({ params }) => {
   );
 };
 
-export default page;
+export default ContactPage;

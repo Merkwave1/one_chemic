@@ -16,7 +16,7 @@ namespace Core
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddCoreServices(this IServiceCollection services,IConfiguration _conf)
+        public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration _conf)
         {
             var jwtSettings = _conf.GetSection("Jwt");
 
@@ -44,6 +44,7 @@ namespace Core
             services.AddAuthorization();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             return services;
         }

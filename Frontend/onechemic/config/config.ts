@@ -6,6 +6,9 @@ export const PRODUCTS_ENDPOINT = `${API_BASE_URL}/api/product`;
 export const PRODUCT_BY_ID_ENDPOINT = (id: number | string) =>
   `${API_BASE_URL}/api/product/${id}`;
 
+// Client Endpoints
+export const CLIENT_ENDPOINT = `${API_BASE_URL}/api/client`;
+
 // Image base URL for displaying product images
 export const IMAGE_BASE_URL = API_BASE_URL;
 
