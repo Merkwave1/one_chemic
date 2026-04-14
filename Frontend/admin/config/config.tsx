@@ -16,5 +16,15 @@ export const UPDATE_PRODUCT_ENDPOINT = (id: number | string) =>
 export const DELETE_PRODUCT_ENDPOINT = (id: number | string) =>
   `${API_BASE_URL}/api/product/${id}`; // DELETE
 
+// Category Endpoints
+export const CATEGORIES_ENDPOINT = `${API_BASE_URL}/api/category`;
+export const CATEGORY_BY_ID_ENDPOINT = (id: number | string) =>
+  `${API_BASE_URL}/api/category/${id}`;
+export const ADD_CATEGORY_ENDPOINT = `${API_BASE_URL}/api/category`;
+export const UPDATE_CATEGORY_ENDPOINT = (id: number | string) =>
+  `${API_BASE_URL}/api/category/${id}`;
+export const DELETE_CATEGORY_ENDPOINT = (id: number | string) =>
+  `${API_BASE_URL}/api/category/${id}`;
+
 // Image base URL for displaying product images
 export const IMAGE_BASE_URL = API_BASE_URL;

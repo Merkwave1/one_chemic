@@ -39,7 +39,7 @@ const HeroHome: React.FC<GradientProps> = ({ lang, rtl = "ltr" }) => {
           <h1 className="text-3xl mt-30 md:mt-0 md:text-5xl text-white max-w-4xl p-2 md:p-10  text-center  ">
             {lang === "ar"
               ? "المورد المتكامل للمواد الخام الكيميائية"
-              : "YOUR ONE-STOP SUPPLIER FOR CHEMICAL RAW MATERIALS"}
+              : "YOUR ONE-STOP SUPPLIER FOR CHEMICAL RAW MATERIALS 1"}
           </h1>
           <button className="bg-yellowish hover:scale-110 transition-transform duration-300 cursor-pointer px-4 md:px-12 py-2 shadow-[0_0_32px_rgba(248,147,31,1)]  self-center rounded-lg">
             {" "}

@@ -1,8 +1,10 @@
 ﻿using Core.Entities;
 using Infrastructure.persistence;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Infrastructure.DataSeeding
@@ -306,6 +308,74 @@ namespace Infrastructure.DataSeeding
                     }
                 };
             await context.Products.AddRangeAsync(products);
+            await context.SaveChangesAsync();
+        }
+
+        public static async Task SeedCategoriesAsync(ApplicationDbContext context, IWebHostEnvironment env)
+        {
+            if (await context.Categories.AnyAsync())
+                return;
+
+            var wwwroot = env.WebRootPath ?? Path.Combine(env.ContentRootPath, "wwwroot");
+            var categoriesDir = Path.Combine(wwwroot, "categories");
+            if (!Directory.Exists(categoriesDir))
+                Directory.CreateDirectory(categoriesDir);
+
+            var seedImages = new Dictionary<string, string>
+            {
+                { "Solvents", "solvents.webp" },
+                { "Polymers", "polymers.webp" },
+                { "Chemical Additives", "chemicalAddtives.webp" },
+                { "Chemical Preservatives", "preservatives.webp" },
+                { "Pigments & Fillers", "Fillers.webp" }
+            };
+
+            // Copy seed images from onechemic public folder if they exist in wwwroot root
+            foreach (var kvp in seedImages)
+            {
+                var srcPath = Path.Combine(wwwroot, kvp.Value);
+                var destPath = Path.Combine(categoriesDir, kvp.Value);
+                if (File.Exists(srcPath) && !File.Exists(destPath))
+                {
+                    File.Copy(srcPath, destPath);
+                }
+            }
+
+            var categories = new List<Category>
+            {
+                new Category
+                {
+                    TitleEn = "Solvents",
+                    TitleAr = "مذيبات",
+                    ImagePath = "/categories/solvents.webp"
+                },
+                new Category
+                {
+                    TitleEn = "Polymers",
+                    TitleAr = "بوليمرات",
+                    ImagePath = "/categories/polymers.webp"
+                },
+                new Category
+                {
+                    TitleEn = "Chemical Additives",
+                    TitleAr = "إضافات كيميائية",
+                    ImagePath = "/categories/chemicalAddtives.webp"
+                },
+                new Category
+                {
+                    TitleEn = "Chemical Preservatives",
+                    TitleAr = "مواد حافظة كيميائية",
+                    ImagePath = "/categories/preservatives.webp"
+                },
+                new Category
+                {
+                    TitleEn = "Pigments & Fillers",
+                    TitleAr = "أصباغ ومواد مالئة",
+                    ImagePath = "/categories/Fillers.webp"
+                }
+            };
+
+            await context.Categories.AddRangeAsync(categories);
             await context.SaveChangesAsync();
         }
     }

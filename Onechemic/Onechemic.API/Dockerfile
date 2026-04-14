@@ -29,6 +29,7 @@ COPY --from=publish /app/publish .
 
 # Create directory for uploaded files
 RUN mkdir -p /app/wwwroot/products
+RUN mkdir -p /app/wwwroot/categories
 
 ENV ASPNETCORE_URLS=http://+:8080
 ENV ASPNETCORE_ENVIRONMENT=Production

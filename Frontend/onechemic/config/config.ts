@@ -6,6 +6,9 @@ export const PRODUCTS_ENDPOINT = `${API_BASE_URL}/api/product`;
 export const PRODUCT_BY_ID_ENDPOINT = (id: number | string) =>
   `${API_BASE_URL}/api/product/${id}`;
 
+// Category Endpoints
+export const CATEGORIES_ENDPOINT = `${API_BASE_URL}/api/category`;
+
 // Client Endpoints
 export const CLIENT_ENDPOINT = `${API_BASE_URL}/api/client`;
 
@@ -114,4 +117,29 @@ export function filterProductsByCategory(products: Product[], categorySlug: stri
 // Get category slug from product
 export function getCategorySlug(product: Product): string {
   return CATEGORY_SLUG_MAP[product.categoryEn] || "solvents";
+}
+
+// Category type from API
+export type CategoryEntity = {
+  id: number;
+  titleEn: string;
+  titleAr: string;
+  imagePath: string;
+};
+
+// Fetch all categories from API
+export async function fetchCategories(): Promise<CategoryEntity[]> {
+  try {
+    const response = await fetch(CATEGORIES_ENDPOINT, {
+      next: { revalidate: 60 },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
+  }
 }

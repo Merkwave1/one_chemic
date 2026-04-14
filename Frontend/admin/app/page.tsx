@@ -96,7 +96,7 @@ const Page: React.FC = () => {
         onSubmit={handleLogin}
         className="flex flex-col items-center text-right justify-center w-full max-w-md sm:max-w-sm py-6 px-2 md:p-6 sm:p-4 bg-white rounded shadow"
       >
-        <h2 className="text-4xl sm:text-3xl mb-8 text-center">تسجيل الدخول</h2>
+        <h2 className="text-4xl sm:text-3xl mb-8 text-center">تسجيلتسجيل الدخول</h2>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
 

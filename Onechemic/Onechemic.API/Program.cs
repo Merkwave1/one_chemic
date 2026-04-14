@@ -3,6 +3,7 @@ using Core.Entities;
 using Infrastructure;
 using Infrastructure.DataSeeding;
 using Infrastructure.persistence;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Onechemic.API.Middlewares;
@@ -59,6 +60,10 @@ try
         
         await DbInitializer.SeedProductsAsync(context);
         logger.LogInformation("Database seeding completed.");
+
+        var webEnv = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+        await DbInitializer.SeedCategoriesAsync(context, webEnv);
+        logger.LogInformation("Category seeding completed.");
     }
 
     app.UseExceptionHandlingMiddleware();

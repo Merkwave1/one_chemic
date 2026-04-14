@@ -44,6 +44,7 @@ namespace Core
             services.AddAuthorization();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IEmailService, EmailService>();
 
             return services;

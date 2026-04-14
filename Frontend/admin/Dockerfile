@@ -19,6 +19,7 @@ COPY . .
 # Set environment variable for API URL (will be overridden at runtime)
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NODE_OPTIONS=--max-old-space-size=512
 
 # Build the application
 RUN npm run build

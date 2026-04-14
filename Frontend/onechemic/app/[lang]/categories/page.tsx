@@ -1,7 +1,9 @@
 import React from "react";
 import CatergoryCard from "@/components/CatergoryCard";
+import { fetchCategories, getImageUrl, CATEGORY_SLUG_MAP } from "@/config/config";
 
-export const categories = [
+// Fallback categories in case API is unavailable
+const fallbackCategories = [
   {
     title: { en: "Solvents", ar: "المذيبات" },
     description: {
@@ -49,6 +51,11 @@ export const categories = [
   },
 ];
 
+// Map category titleEn to a URL slug
+function getCatSlug(titleEn: string): string {
+  return CATEGORY_SLUG_MAP[titleEn] || titleEn.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and");
+}
+
 type PageProps = {
   params: {
     lang: "en" | "ar";
@@ -57,6 +64,20 @@ type PageProps = {
 
 const page: React.FC<PageProps> = async ({ params }) => {
   const { lang } = await params;
+
+  // Try to fetch categories from API
+  const apiCategories = await fetchCategories();
+
+  // Use API categories if available, otherwise fallback
+  const categories = apiCategories.length > 0
+    ? apiCategories.map((cat) => ({
+        title: { en: cat.titleEn, ar: cat.titleAr },
+        description: { en: "", ar: "" },
+        imagePath: getImageUrl(cat.imagePath),
+        nav: `/categories/${getCatSlug(cat.titleEn)}`,
+      }))
+    : fallbackCategories;
+
   return (
     <section className="h-full grid grid-cols-1 gap-x-6 gap-y-6 p-6 md:p-16 md:grid-cols-3 border-t-2 border-yellowish bg-bluish">
       {categories.map((cat) => (

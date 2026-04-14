@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Product, FormData, ModalType } from "@/types/product";
-import { CATEGORIES } from "@/data/products";
 import { useAtom } from "jotai";
 import { tokenAtom, tokenTimestampAtom, isTokenExpired } from "@/atom/Auth";
 import {
@@ -15,18 +14,27 @@ import {
   ViewModal,
   DeleteModal,
 } from "@/components/admin";
+import CategoriesTab from "@/components/admin/CategoriesTab";
 import {
   ADD_PRODUCT_ENDPOINT,
   UPDATE_PRODUCT_ENDPOINT,
   DELETE_PRODUCT_ENDPOINT,
   PRODUCTS_ENDPOINT,
+  CATEGORIES_ENDPOINT,
   IMAGE_BASE_URL,
 } from "@/config/config";
+import { useRouter } from "next/navigation";
+import { Package, Grid3X3, LogOut } from "lucide-react";
+import { CategoryEntity } from "@/types/category";
 
 const lang = "en"; // or 'ar' — you can lift this into props or state later
 
+type TabType = "products" | "categories";
+
 const AdminPage: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<TabType>("products");
   const [products, setProducts] = useState<Product[]>([]);
+  const [apiCategories, setApiCategories] = useState<CategoryEntity[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState<ModalType>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -35,6 +43,7 @@ const AdminPage: React.FC = () => {
   const [token, setToken] = useAtom(tokenAtom);
   const [tokenTimestamp, setTokenTimestamp] = useAtom(tokenTimestampAtom);
   const hasFetched = useRef(false);
+  const router = useRouter();
 
   // Auto-clear token if expired (60 minutes)
   useEffect(() => {
@@ -62,15 +71,20 @@ const AdminPage: React.FC = () => {
     hasFetched.current = true;
 
     try {
-      const response = await fetch(PRODUCTS_ENDPOINT);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const [prodRes, catRes] = await Promise.all([
+        fetch(PRODUCTS_ENDPOINT),
+        fetch(CATEGORIES_ENDPOINT),
+      ]);
+      if (prodRes.ok) {
+        const data = await prodRes.json();
+        setProducts(Array.isArray(data) ? data : []);
       }
-      const data = await response.json();
-      console.log("Fetched products:", data);
-      setProducts(Array.isArray(data) ? data : []);
+      if (catRes.ok) {
+        const catData = await catRes.json();
+        setApiCategories(Array.isArray(catData) ? catData : []);
+      }
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error fetching data:", error);
       setProducts([]);
     } finally {
       setLoading(false);
@@ -105,9 +119,9 @@ const AdminPage: React.FC = () => {
 
   const openEditModal = (product: Product) => {
     setSelectedProduct(product);
-    // Find the matching category from CATEGORIES to ensure exact match for dropdown
-    const matchedCategory = CATEGORIES.find(
-      (c) => c.en.toLowerCase() === product.categoryEn?.toLowerCase(),
+    // Find the matching category from API categories to ensure exact match for dropdown
+    const matchedCategory = apiCategories.find(
+      (c) => c.titleEn.toLowerCase() === product.categoryEn?.toLowerCase(),
     );
     setFormData({
       titleEn: product.titleEn,
@@ -116,8 +130,8 @@ const AdminPage: React.FC = () => {
       descriptionAr: product.descriptionAr,
       detailedDescriptionEn: product.detailedDescriptionEn,
       detailedDescriptionAr: product.detailedDescriptionAr,
-      categoryEn: matchedCategory?.en || product.categoryEn || "",
-      categoryAr: matchedCategory?.ar || product.categoryAr || "",
+      categoryEn: matchedCategory?.titleEn || product.categoryEn || "",
+      categoryAr: matchedCategory?.titleAr || product.categoryAr || "",
       nav: product.nav || "",
     });
     setImagePreview(
@@ -137,12 +151,12 @@ const AdminPage: React.FC = () => {
   };
 
   const handleCategoryChange = (categoryEn: string) => {
-    const category = CATEGORIES.find((c) => c.en === categoryEn);
+    const category = apiCategories.find((c) => c.titleEn === categoryEn);
     if (category) {
       setFormData({
         ...formData,
-        categoryEn: category.en,
-        categoryAr: category.ar,
+        categoryEn: category.titleEn,
+        categoryAr: category.titleAr,
       });
     }
   };
@@ -277,78 +291,134 @@ const AdminPage: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+    setToken("");
+    setTokenTimestamp(0);
+    router.replace("/");
+  };
+
+  // Convert apiCategories to the format AddEditModal expects
+  const categoryOptions = apiCategories.map((c) => ({
+    en: c.titleEn,
+    ar: c.titleAr,
+  }));
+
   return (
     <div className="min-h-screen bg-bluish">
-      {/* Header */}
-      <AdminHeader
-        lang={lang}
-        totalProducts={products.length}
-        onAddClick={openAddModal}
-        disabled={loading}
-      />
-
-      {/* Loading State */}
-      {loading ? (
-        <LoadingSpinner lang={lang} />
-      ) : (
-        /* Grid */
-        <section className="px-4 py-6 sm:px-6 md:px-8 md:py-8">
-          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                lang={lang}
-                onView={() => openViewModal(product)}
-                onEdit={() => openEditModal(product)}
-                onDelete={() => openDeleteModal(product)}
-                disabled={loading}
-              />
-            ))}
+      {/* Top Nav with Tabs and Logout */}
+      <nav className="bg-bluish border-b border-white/10">
+        <div className="flex items-center justify-between px-4 sm:px-6 md:px-8 py-3">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <button
+              onClick={() => setActiveTab("products")}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
+                activeTab === "products"
+                  ? "bg-yellowish text-bluish shadow-lg"
+                  : "text-white/70 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              <Package size={18} />
+              <span className="hidden sm:inline">Products</span>
+            </button>
+            <button
+              onClick={() => setActiveTab("categories")}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
+                activeTab === "categories"
+                  ? "bg-yellowish text-bluish shadow-lg"
+                  : "text-white/70 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              <Grid3X3 size={18} />
+              <span className="hidden sm:inline">Categories</span>
+            </button>
           </div>
+          <button
+            onClick={handleLogout}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-all"
+          >
+            <LogOut size={18} />
+            <span className="hidden sm:inline">Logout</span>
+          </button>
+        </div>
+      </nav>
 
-          {products.length === 0 && (
-            <EmptyState lang={lang} onAddClick={openAddModal} />
-          )}
-        </section>
-      )}
+      {/* Tab Content */}
+      {activeTab === "products" ? (
+        <>
+          {/* Header */}
+          <AdminHeader
+            lang={lang}
+            totalProducts={products.length}
+            onAddClick={openAddModal}
+            disabled={loading}
+          />
 
-      {/* Modals */}
-      {showModal && (
-        <ModalWrapper onClose={closeModal}>
-          {(showModal === "add" || showModal === "edit") && (
-            <AddEditModal
-              lang={lang}
-              mode={showModal}
-              formData={formData}
-              imagePreview={imagePreview}
-              categories={CATEGORIES}
-              onFormChange={setFormData}
-              onImageChange={handleImageChange}
-              onCategoryChange={handleCategoryChange}
-              onSubmit={handleSubmit}
-              onClose={closeModal}
-            />
+          {/* Loading State */}
+          {loading ? (
+            <LoadingSpinner lang={lang} />
+          ) : (
+            /* Grid */
+            <section className="px-4 py-6 sm:px-6 md:px-8 md:py-8">
+              <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {products.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    lang={lang}
+                    onView={() => openViewModal(product)}
+                    onEdit={() => openEditModal(product)}
+                    onDelete={() => openDeleteModal(product)}
+                    disabled={loading}
+                  />
+                ))}
+              </div>
+
+              {products.length === 0 && (
+                <EmptyState lang={lang} onAddClick={openAddModal} />
+              )}
+            </section>
           )}
 
-          {showModal === "view" && selectedProduct && (
-            <ViewModal
-              lang={lang}
-              product={selectedProduct}
-              onEdit={handleEditFromView}
-              onClose={closeModal}
-            />
-          )}
+          {/* Modals */}
+          {showModal && (
+            <ModalWrapper onClose={closeModal}>
+              {(showModal === "add" || showModal === "edit") && (
+                <AddEditModal
+                  lang={lang}
+                  mode={showModal}
+                  formData={formData}
+                  imagePreview={imagePreview}
+                  categories={categoryOptions}
+                  onFormChange={setFormData}
+                  onImageChange={handleImageChange}
+                  onCategoryChange={handleCategoryChange}
+                  onSubmit={handleSubmit}
+                  onClose={closeModal}
+                />
+              )}
 
-          {showModal === "delete" && selectedProduct && (
-            <DeleteModal
-              lang={lang}
-              product={selectedProduct}
-              onConfirm={handleDelete}
-              onClose={closeModal}
-            />
+              {showModal === "view" && selectedProduct && (
+                <ViewModal
+                  lang={lang}
+                  product={selectedProduct}
+                  onEdit={handleEditFromView}
+                  onClose={closeModal}
+                />
+              )}
+
+              {showModal === "delete" && selectedProduct && (
+                <DeleteModal
+                  lang={lang}
+                  product={selectedProduct}
+                  onConfirm={handleDelete}
+                  onClose={closeModal}
+                />
+              )}
+            </ModalWrapper>
           )}
-        </ModalWrapper>
+        </>
+      ) : (
+        <CategoriesTab />
       )}
     </div>
   );

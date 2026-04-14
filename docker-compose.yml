@@ -21,24 +21,6 @@ services:
     networks:
       - onechemic-network
 
-  # Caddy Reverse Proxy
-  caddy:
-    image: caddy:2-alpine
-    container_name: onechemic-caddy
-    restart: unless-stopped
-    ports:
-      - "8888:8888"
-      - "8889:8889"
-      - "8890:8890"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-    depends_on:
-      - backend
-      - admin
-      - onechemic
-    networks:
-      - onechemic-network
-
   # Backend API (.NET)
   backend:
     build:
@@ -54,12 +36,13 @@ services:
       - Jwt__Audience=oncechemic
       - Jwt__ExpiresInMinutes=60
     ports:
-      - "5224:8080"
+      - "127.0.0.1:5017:8080"
     depends_on:
       postgres:
         condition: service_healthy
     volumes:
       - backend_uploads:/app/wwwroot/products
+      - backend_categories:/app/wwwroot/categories
     networks:
       - onechemic-network
 
@@ -69,13 +52,13 @@ services:
       context: ./Frontend/admin
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=https://seven-proxy-tex-difficulty.trycloudflare.com
+        - NEXT_PUBLIC_API_URL=https://nassar-onechemic-api.o1force.com
     container_name: onechemic-admin
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_API_URL=https://seven-proxy-tex-difficulty.trycloudflare.com
+      - NEXT_PUBLIC_API_URL=https://nassar-onechemic-api.o1force.com
     ports:
-      - "3000:3000"
+      - "127.0.0.1:5018:3000"
     depends_on:
       - backend
     networks:
@@ -87,13 +70,13 @@ services:
       context: ./Frontend/onechemic
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=https://seven-proxy-tex-difficulty.trycloudflare.com
+        - NEXT_PUBLIC_API_URL=https://nassar-onechemic-api.o1force.com
     container_name: onechemic-frontend
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_API_URL=https://seven-proxy-tex-difficulty.trycloudflare.com
+      - NEXT_PUBLIC_API_URL=https://nassar-onechemic-api.o1force.com
     ports:
-      - "3001:3001"
+      - "127.0.0.1:5016:3001"
     depends_on:
       - backend
     networks:
@@ -102,8 +85,7 @@ services:
 volumes:
   postgres_data:
   backend_uploads:
-  caddy_data:
-  caddy_config:
+  backend_categories:
 
 networks:
   onechemic-network:
